@@ -1,22 +1,31 @@
+{% extends 'base.html' %}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html>
-  <head>
-	<title>TreasureGram</title>
-	 <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
-  </head>
-  <body>
-    <h1>TreasureGram</h1>
-    {% for treasure in treasures %}
-  	  <p>Name: {{ treasure.name }}</p>
-  	{% if treasure.value > 0 %}
+
+{% block content %}
+{% for treasure in treasures %}
+    <a href="/{{treasure.id}}">
+      <p>Name: {{ treasure.name }}</p>
+    </a>
+    <a href="/user/{{treasure.user.username}}"
+      <p>Found By: {{treasure.user.username }}</p>
+    </a>
+    {% if treasure.value > 0 %}
       <p>Value: {{ treasure.value}}</p>
-  	{% else %}
+    {% else %}
       <p>Value: Unknown</p>
-  	{% endif%}
-  	  <hr />
-{% endfor %}
-    <hr />
-    <footer>All Rights Reserved, TreasureGram 2017</footer>
-  </body>
- </html>
+    {% endif%}
+    <hr/>
+     {% endfor %}
+     <form action="post_url/" method="post">
+           {% csrf_token %}
+           {{ form.as_p }}
+           <input type="submit" value="Submit" />
+     </form>
+
+{% endblock %}
+
+<form action="post_url/" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Submit" />
+</form>
